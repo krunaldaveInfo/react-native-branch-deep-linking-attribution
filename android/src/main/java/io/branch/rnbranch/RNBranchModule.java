@@ -507,6 +507,7 @@ public class RNBranchModule extends ReactContextBaseJavaModule {
 
                             @Override
                             public void onShareLinkDialogDismissed() {
+                                Log.i("Intermiles", "onShareLinkDialogDismissed: " );
                                 if(mPromise == null) {
                                     return;
                                 }
@@ -521,6 +522,7 @@ public class RNBranchModule extends ReactContextBaseJavaModule {
 
                             @Override
                             public void onLinkShareResponse(String sharedLink, String sharedChannel, BranchError error) {
+                                Log.i("Intermiles", "onLinkShareResponse: "+sharedChannel );
                                 if(mPromise == null) {
                                     return;
                                 }
@@ -534,6 +536,17 @@ public class RNBranchModule extends ReactContextBaseJavaModule {
                             }
                             @Override
                             public void onChannelSelected(String channelName) {
+                                Log.i("Intermiles", "onChannelSelected: "+channelName );
+                                if(mPromise == null) {
+                                    return;
+                                }
+
+                                WritableMap map = new WritableNativeMap();
+                                map.putString("channel", channelName);
+                                map.putBoolean("completed", true);
+                                map.putString("error", null);
+                                mPromise.resolve(map);
+                                mPromise = null;
                             }
 
                             private Branch.BranchLinkShareListener init(Promise promise) {
